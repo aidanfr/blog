@@ -1,0 +1,274 @@
+// Body resets
+//
+// Update the foundational and global aspects of the page.
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--body-font);
+  font-size: var(--body-font-size);
+  line-height: var(--body-line-height);
+  color: var(--body-color);
+  background-color: var(--body-bg);
+  -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+  width: 100%;
+  height: 100vh;
+}
+
+// No `:visited` state is required by default (browsers will use `a`)
+a {
+  color: var(--link-color);
+
+  // `:focus` is linked to `:hover` for basic accessibility
+  &:hover,
+  &:focus {
+    color: var(--link-hover-color);
+  }
+
+  strong {
+    color: inherit;
+  }
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  margin-bottom: var(--spacer);
+  border-radius: var(--border-radius);
+}
+
+table {
+  margin-bottom: 1rem;
+  width: 100%;
+  border: 0 solid var(--border-color);
+  border-collapse: collapse;
+}
+
+td,
+th {
+  padding: .25rem .5rem;
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+  border-bottom-width: 1px;
+}
+
+th {
+  text-align: left;
+}
+
+thead th {
+  border-bottom-color: currentColor;
+}
+
+mark {
+  padding: .15rem;
+  background-color: var(--yellow-100);
+  border-radius: .125rem;
+}
+
+.menu {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+}
+
+.hr {
+  position: fixed;
+  left: 50%;
+  width: 6px;
+  height: 100vh;
+  background-color: #fff;
+  z-index: 1;
+  transform: scaleY(0);
+}
+
+.menu-left,
+.menu-right {
+  position: fixed;
+  width: 50%;
+  height: 100vh;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+}
+
+.menu-left {
+  left: -50%;
+}
+
+.menu-right {
+  right: -50%;
+}
+
+.menu-link a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 100px;
+}
+
+.menu-link:first-child a::before {
+  display: block;
+  position: relative;
+  content: "";
+  background-image: url("/assets/brush-stroke.png");
+  background-size: 100%;
+  background-repeat: no-repeat;
+  top: 80px;
+  left: 0;
+  height: 40px;
+  width: 240px;
+}
+
+.menu-link a span {
+  font-family: "Bigilla";
+  font-size: 24px;
+}
+
+.contact .title {
+  font-size: 80px;
+}
+
+.contact .info {
+  font-family: Helvetica, sans-serif;
+  font-weight: lighter;
+}
+
+.mail {
+  margin-bottom: 60px;
+}
+
+.menu-close {
+  z-index: 2;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  opacity: 1;
+}
+
+.menu-close-img {
+  width: 48px;
+  margin-right: 10%;
+}
+
+.menu-open {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  right: 0rem;
+  padding: 2rem;
+  cursor: pointer;
+  font-size: 20px;
+  color: #000;
+}
+
+@media (max-width: 900px) {
+  .menu-right {
+    display: none;
+  }
+
+  .menu-left {
+    width: 100%;
+  }
+
+  .menu-close {
+    position: fixed;
+    top: 10%;
+    left: 80%;
+    transform: translate(-50%, -50%);
+    margin: 40px;
+  }
+
+  .hr {
+    display: none;
+  }
+}
+
+@mixin glitchCopy { 
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch {
+  position: relative;
+  color: var(--dark-blue);
+  font-size: 1.5em;
+  letter-spacing: .125em;
+  /* Animation provies a slight random skew. Check bottom of doc
+  for more information on how to random skew. */
+  animation: glitch-skew 1s infinite linear alternate-reverse;
+  
+  // Creates a copy before our text. 
+  &::before{
+    // Duplicates our text with the mixin.
+    @include glitchCopy;
+    // Scoots text slightly to the left for the color offset.
+    left: 2px;
+    // Creates the color 'shadow' that happens on the glitch.
+    text-shadow: -2px 0 #ff00c1;
+    /* Creates an initial clip for our glitch. This works in
+    a typical top,right,bottom,left fashion and creates a mask
+    to only show a certain part of the glitch at a time. */
+    clip: rect(44px, 450px, 56px, 0);
+    /* Runs our glitch-anim defined below to run in a 5s loop, infinitely,
+    with an alternating animation to keep things fresh. */
+    animation: glitch-anim 5s infinite linear alternate-reverse;
+  }
+  
+  // Creates a copy after our text. Note comments from ::before.
+  &::after {
+    @include glitchCopy;
+    left: -2px;
+    text-shadow: -2px 0 #00fff9, 2px 2px #ff00c1;
+    animation: glitch-anim2 1s infinite linear alternate-reverse;
+  }
+}
+
+/* Creates an animation with 20 steaps. For each step, it calculates 
+a percentage for the specific step. It then generates a random clip
+box to be used for the random glitch effect. Also adds a very subtle
+skew to change the 'thickness' of the glitch.*/
+@keyframes glitch-anim {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100)+px, 9999px, random(100)+px, 0);
+      transform: skew((random(100) / 100) + deg);
+    }
+  }
+}
+
+// Same deal, just duplicated for ultra randomness.
+@keyframes glitch-anim2 {
+  $steps: 20;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      clip: rect(random(100)+px, 9999px, random(100)+px, 0);
+      transform: skew((random(100) / 100) + deg);
+    }
+  }
+}
+
+// Does the same deal as before, but now only skews. Used for main text.
+@keyframes glitch-skew {
+  $steps: 10;
+  @for $i from 0 through $steps {
+    #{percentage($i*(1/$steps))} {
+      transform: skew((random(10) - 5) + deg);
+    }
+  }
+}

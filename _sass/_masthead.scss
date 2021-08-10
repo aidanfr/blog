@@ -1,0 +1,28 @@
+// Masthead
+//
+// Super small header above the content for site name and short description.
+
+.masthead {
+  padding-top: var(--spacer);
+  padding-bottom: var(--spacer);
+  margin-bottom: var(--spacer);
+}
+
+.masthead-title {
+  margin-bottom: 0;
+
+  img {
+    width: 48px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  small {
+    font-weight: 400;
+    font-family: "Input Mono";
+    color: var(--dark-blue);
+  }
+}
